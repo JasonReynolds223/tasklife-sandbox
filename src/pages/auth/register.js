@@ -3,7 +3,7 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Link, Stack, TextField, Typography, Radio, FormControlLabel, RadioGroup } from '@mui/material';
 import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
 
@@ -13,8 +13,9 @@ const Page = () => {
   const formik = useFormik({
     initialValues: {
       email: '',
-      name: '',
+      username: '',
       password: '',
+      confirm: '',
       submit: null
     },
     validationSchema: Yup.object({
@@ -23,19 +24,26 @@ const Page = () => {
         .email('Must be a valid email')
         .max(255)
         .required('Email is required'),
-      name: Yup
+      username: Yup
         .string()
         .max(255)
-        .required('Name is required'),
+        .required('Username is required'),
       password: Yup
         .string()
         .max(255)
-        .required('Password is required')
+        .required('Password is required'),
+      confirm: Yup
+      .string()
+      .max(255)
+      .oneOf([Yup.ref('password'), null], 'Passwords must match')
+      .required('Password Confirm is required'),
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await auth.signUp(values.email, values.name, values.password);
-        router.push('/');
+        const response = await auth.signUp(values.email, values.username, values.password);
+        if (response.status === 200) {
+          router.push('/auth/login');
+        }
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
@@ -43,12 +51,11 @@ const Page = () => {
       }
     }
   });
-
   return (
     <>
       <Head>
         <title>
-          Register | Devias Kit
+          Register | Tasklife.AI
         </title>
       </Head>
       <Box
@@ -97,14 +104,14 @@ const Page = () => {
             >
               <Stack spacing={3}>
                 <TextField
-                  error={!!(formik.touched.name && formik.errors.name)}
+                  error={!!(formik.touched.username && formik.errors.username)}
                   fullWidth
-                  helperText={formik.touched.name && formik.errors.name}
-                  label="Name"
-                  name="name"
+                  helperText={formik.touched.username && formik.errors.username}
+                  label="Username"
+                  name="username"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
-                  value={formik.values.name}
+                  value={formik.values.username}
                 />
                 <TextField
                   error={!!(formik.touched.email && formik.errors.email)}
@@ -128,6 +135,17 @@ const Page = () => {
                   type="password"
                   value={formik.values.password}
                 />
+                <TextField
+                  error={!!(formik.touched.confirm && formik.errors.confirm)}
+                  fullWidth
+                  helperText={formik.touched.confirm && formik.errors.confirm}
+                  label="Password Confirm"
+                  name="confirm"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  type="password"
+                  value={formik.values.confirm}
+                />
               </Stack>
               {formik.errors.submit && (
                 <Typography
@@ -145,7 +163,7 @@ const Page = () => {
                 type="submit"
                 variant="contained"
               >
-                Continue
+                Sign Up
               </Button>
             </form>
           </div>

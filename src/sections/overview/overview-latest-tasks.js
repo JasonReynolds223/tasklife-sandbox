@@ -20,26 +20,26 @@ import { SeverityPill } from 'src/components/severity-pill';
 
 const statusMap = {
   pending: 'warning',
-  delivered: 'success',
-  refunded: 'error'
+  completed: 'success',
+  failed: 'error'
 };
 
-export const OverviewLatestOrders = (props) => {
+export const OverviewLatestTasks = (props) => {
   const { orders = [], sx } = props;
 
   return (
     <Card sx={sx}>
-      <CardHeader title="Latest Orders" />
+      <CardHeader title="Latest Tasks" />
       <Scrollbar sx={{ flexGrow: 1 }}>
         <Box sx={{ minWidth: 800 }}>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell>
-                  Order
+                  Id
                 </TableCell>
                 <TableCell>
-                  Customer
+                  Tasks
                 </TableCell>
                 <TableCell sortDirection="desc">
                   Date
@@ -51,7 +51,7 @@ export const OverviewLatestOrders = (props) => {
             </TableHead>
             <TableBody>
               {orders.map((order) => {
-                const createdAt = format(order.createdAt, 'dd/MM/yyyy');
+                const createdAt = format(order.createdAt, 'HH:mm  dd/MM/yyyy');
 
                 return (
                   <TableRow
@@ -62,7 +62,7 @@ export const OverviewLatestOrders = (props) => {
                       {order.ref}
                     </TableCell>
                     <TableCell>
-                      {order.customer.name}
+                      {order.task.title}
                     </TableCell>
                     <TableCell>
                       {createdAt}
@@ -98,7 +98,7 @@ export const OverviewLatestOrders = (props) => {
   );
 };
 
-OverviewLatestOrders.prototype = {
+OverviewLatestTasks.prototype = {
   orders: PropTypes.array,
   sx: PropTypes.object
 };

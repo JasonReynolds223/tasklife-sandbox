@@ -8,7 +8,6 @@ import {
   Alert,
   Box,
   Button,
-  FormHelperText,
   Link,
   Stack,
   Tab,
@@ -25,8 +24,8 @@ const Page = () => {
   const [method, setMethod] = useState('email');
   const formik = useFormik({
     initialValues: {
-      email: 'demo@devias.io',
-      password: 'Password123!',
+      email: '',
+      password: '',
       submit: null
     },
     validationSchema: Yup.object({
@@ -42,11 +41,13 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await auth.signIn(values.email, values.password);
-        router.push('/');
+        const response = await auth.signIn(values.email, values.password);
+        if (response.status == 200) {
+          router.push('/');
+        }
       } catch (err) {
         helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
+        helpers.setErrors({ submit: "It's not a valid email or password" });
         helpers.setSubmitting(false);
       }
     }
@@ -59,9 +60,9 @@ const Page = () => {
     []
   );
 
-  const handleSkip = useCallback(
+  const handleForgotPassword = useCallback(
     () => {
-      auth.skip();
+      auth.forgotPassword();
       router.push('/');
     },
     [auth, router]
@@ -71,7 +72,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Login | Devias Kit
+          Login | Tasklife.AI
         </title>
       </Head>
       <Box
@@ -158,9 +159,9 @@ const Page = () => {
                     value={formik.values.password}
                   />
                 </Stack>
-                <FormHelperText sx={{ mt: 1 }}>
-                  Optionally you can skip.
-                </FormHelperText>
+                {/* <FormHelperText sx={{ mt: 1 }}>
+                  please type your password correctly.
+                </FormHelperText> */}
                 {formik.errors.submit && (
                   <Typography
                     color="error"
@@ -183,9 +184,9 @@ const Page = () => {
                   fullWidth
                   size="large"
                   sx={{ mt: 3 }}
-                  onClick={handleSkip}
+                  onClick={handleForgotPassword}
                 >
-                  Skip authentication
+                  Forgot password?
                 </Button>
                 <Alert
                   color="primary"
@@ -193,7 +194,10 @@ const Page = () => {
                   sx={{ mt: 3 }}
                 >
                   <div>
-                    You can use <b>demo@devias.io</b> and password <b>Password123!</b>
+                    We will send you an email to verify your account.
+                  </div>
+                  <div>
+                    If you don&apos;t receive the email, please check your spam folder.
                   </div>
                 </Alert>
               </form>
@@ -204,11 +208,17 @@ const Page = () => {
                   sx={{ mb: 1 }}
                   variant="h6"
                 >
-                  Not available in the demo
+                  Use your Phone Number to verify your identify.
                 </Typography>
-                <Typography color="text.secondary">
-                  To prevent unnecessary costs we disabled this feature in the demo.
-                </Typography>
+                <TextField
+                    fullWidth
+                    label="Phonenumber"
+                    name="phonenumber"
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    type="phonenumber"
+                />
+                
               </div>
             )}
           </div>

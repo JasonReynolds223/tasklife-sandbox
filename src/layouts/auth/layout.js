@@ -42,7 +42,7 @@ export const Layout = (props) => {
           >
             <Box
               component={NextLink}
-              href="/"
+              href="/auth/login"
               sx={{
                 display: 'inline-flex',
                 height: 32,
@@ -59,7 +59,7 @@ export const Layout = (props) => {
           lg={6}
           sx={{
             alignItems: 'center',
-            background: 'radial-gradient(50% 50% at 50% 50%, #122647 0%, #090E23 100%)',
+            background: 'white',
             color: 'white',
             display: 'flex',
             justifyContent: 'center',
@@ -71,11 +71,15 @@ export const Layout = (props) => {
           <Box sx={{ p: 3 }}>
             <Typography
               align="center"
-              color="inherit"
               sx={{
-                fontSize: '24px',
+                pt: 13,
+                fontSize: '34px',
                 lineHeight: '32px',
-                mb: 1
+                mb: 4,
+                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)', 
+                color: 'red', 
+                fontWeight: 'bold', 
+                textAlign: 'center',
               }}
               variant="h1"
             >
@@ -85,19 +89,25 @@ export const Layout = (props) => {
                 sx={{ color: '#15B79E' }}
                 target="_blank"
               >
-                Devias Kit
+                Tasklife.AI
               </Box>
             </Typography>
             <Typography
               align="center"
-              sx={{ mb: 3 }}
+              sx={{
+                mb: 3,
+                fontSize: '24px',
+                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)', 
+                color: '#0039e6', 
+                fontWeight: 'bold', 
+              }}
               variant="subtitle1"
             >
-              A professional kit that comes with ready-to-use MUI components.
+              Elevate your daily life with Tasklife
             </Typography>
             <img
               alt=""
-              src="/assets/auth-illustration.svg"
+              src="/assets/register-page.jpg"
             />
           </Box>
         </Grid>

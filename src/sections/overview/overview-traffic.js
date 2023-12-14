@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import ComputerDesktopIcon from '@heroicons/react/24/solid/ComputerDesktopIcon';
-import DeviceTabletIcon from '@heroicons/react/24/solid/DeviceTabletIcon';
+import BuildingOfficeIcon from '@heroicons/react/24/solid/BuildingOfficeIcon';
+import VideoCameraIcon from '@heroicons/react/24/solid/VideoCameraIcon'
 import PhoneIcon from '@heroicons/react/24/solid/PhoneIcon';
 import {
   Box,
@@ -63,14 +63,14 @@ const useChartOptions = (labels) => {
 };
 
 const iconMap = {
-  Desktop: (
+  Office: (
     <SvgIcon>
-      <ComputerDesktopIcon />
+      <BuildingOfficeIcon />
     </SvgIcon>
   ),
-  Tablet: (
+  Meeting: (
     <SvgIcon>
-      <DeviceTabletIcon />
+      <VideoCameraIcon />
     </SvgIcon>
   ),
   Phone: (

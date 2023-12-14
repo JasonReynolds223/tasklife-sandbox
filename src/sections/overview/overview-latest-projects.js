@@ -17,12 +17,12 @@ import {
   SvgIcon
 } from '@mui/material';
 
-export const OverviewLatestProducts = (props) => {
+export const OverviewLatestProjects = (props) => {
   const { products = [], sx } = props;
 
   return (
     <Card sx={sx}>
-      <CardHeader title="Latest Products" />
+      <CardHeader title="Latest Projects" />
       <List>
         {products.map((product, index) => {
           const hasDivider = index < products.length - 1;
@@ -93,7 +93,7 @@ export const OverviewLatestProducts = (props) => {
   );
 };
 
-OverviewLatestProducts.propTypes = {
+OverviewLatestProjects.propTypes = {
   products: PropTypes.array,
   sx: PropTypes.object
 };

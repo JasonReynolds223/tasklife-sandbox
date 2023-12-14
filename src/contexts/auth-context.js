@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useReducer, useRef } from 'react';
 import PropTypes from 'prop-types';
 
+import Api from 'src/api';
+
 const HANDLERS = {
   INITIALIZE: 'INITIALIZE',
   SIGN_IN: 'SIGN_IN',
@@ -75,7 +77,7 @@ export const AuthProvider = (props) => {
     let isAuthenticated = false;
 
     try {
-      isAuthenticated = window.sessionStorage.getItem('authenticated') === 'true';
+      isAuthenticated = window.localStorage.getItem('access_token'); //should include request to server to get access_token, get the token then extract user id form token.
     } catch (err) {
       console.error(err);
     }
@@ -107,7 +109,7 @@ export const AuthProvider = (props) => {
     []
   );
 
-  const skip = () => {
+  const forgotPassword = () => {
     try {
       window.sessionStorage.setItem('authenticated', 'true');
     } catch (err) {
@@ -128,44 +130,38 @@ export const AuthProvider = (props) => {
   };
 
   const signIn = async (email, password) => {
-    if (email !== 'demo@devias.io' || password !== 'Password123!') {
-      throw new Error('Please check your email and password');
-    }
-
-    try {
-      window.sessionStorage.setItem('authenticated', 'true');
-    } catch (err) {
-      console.error(err);
-    }
-
-    const user = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
-      email: 'anika.visser@devias.io'
-    };
-
-    dispatch({
-      type: HANDLERS.SIGN_IN,
-      payload: user
+    const response = await Api.post('/auth/login', {
+      email,
+      password,
     });
+    localStorage.setItem("access_token", response.data.access_token)
+    return response;
   };
 
-  const signUp = async (email, name, password) => {
-    throw new Error('Sign up is not implemented');
+  const signUp = async (email, username, password) => {
+    const response = await Api.post('/auth/register', {
+      email,
+      username,
+      password,
+    });
+    localStorage.setItem("access_token", response.data.access_token);
+    return response;
   };
+
+    
 
   const signOut = () => {
     dispatch({
       type: HANDLERS.SIGN_OUT
     });
+    localStorage.setItem("access_token", "");
   };
 
   return (
     <AuthContext.Provider
       value={{
         ...state,
-        skip,
+        forgotPassword,
         signIn,
         signUp,
         signOut

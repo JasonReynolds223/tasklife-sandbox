@@ -7,7 +7,7 @@ const Page = () => (
   <>
     <Head>
       <title>
-        404 | Devias Kit
+        404 | Tasklife.AI
       </title>
     </Head>
     <Box
@@ -60,7 +60,7 @@ const Page = () => (
           </Typography>
           <Button
             component={NextLink}
-            href="/"
+            href="/auth/login"
             startIcon={(
               <SvgIcon fontSize="small">
                 <ArrowLeftIcon />
@@ -69,7 +69,7 @@ const Page = () => (
             sx={{ mt: 3 }}
             variant="contained"
           >
-            Go back to dashboard
+            Go back to Login page
           </Button>
         </Box>
       </Container>
